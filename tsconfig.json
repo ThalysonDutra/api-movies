@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+
+  "lib":[
+    "ES5",
+    "ES6"
+  ],  
+
+    /* Language and Environment */
+    "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+   
+
+    /* Modules */
+    "module": "commonjs",                                /* Specify what module code is generated. */
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,    
+    "esModuleInterop": true                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    
+  }
+}
