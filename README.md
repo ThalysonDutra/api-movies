@@ -14,8 +14,10 @@
 - Criar banco de dados com o nome "api_db";
 - Modificar arquivo data-source.ts, adicionando as suas credenciais do PostgreSQL;
 - Para clonar o projeto (Já com o gi instalado):
-    - Usar o comando "git clone https://github.com/ThalysonDutra/api-movies.git";
-
+    - Usar o comando: 
+    ```bash
+   $ git clone https://github.com/ThalysonDutra/api-movies.git
+    ```
 ### Instalar as dependencias:
 
 ```bash
