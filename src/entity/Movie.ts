@@ -23,7 +23,7 @@ class Movie {
     @Column()
     categoryId: number
 
-    @ManyToOne(type => Category, category => category.movie)
+    @ManyToOne(type => Category, category => category.movie, {onDelete:"CASCADE"})
     category: Category
     
 }
