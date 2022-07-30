@@ -21,7 +21,17 @@ class Movie {
     description!: string
 
     @Column()
-    categoryId: number
+    categoryId!: number
+
+    @Column()
+    link!: string
+
+    @Column({default: 0})
+    countScore: number
+
+    @Column({type : "decimal", default: 0.00})
+    score: number
+
 
     @ManyToOne(type => Category, category => category.movie, {onDelete:"CASCADE"})
     category: Category

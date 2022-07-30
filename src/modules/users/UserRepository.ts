@@ -44,6 +44,7 @@ class UserRepository {
     async updateUser (id, {name, email, password, isAdmin }): Promise<Boolean>{
 
         const user = await this.repository.findOne({where:{ id : id }});
+        
 
         if(user){
             const newUser = await this.repository.find({ where: { email: email, id: Not(id)}});
@@ -64,6 +65,13 @@ class UserRepository {
         }
     }
 
+    async findById (id): Promise<User>{
+
+        const user = await this.repository.findOne({where:{ id : id }});
+
+        return user;
+    }
+
     async deleteUser (id): Promise<Boolean>{
 
         const user = await this.repository.findOne({where: {id : id}});
@@ -77,7 +85,7 @@ class UserRepository {
         }
     }
 
-    async login(email, password): Promise<Boolean>{
+    async login(email, password): Promise<User>{
 
         const passwordHash = await hash(password, 8);
         const user = await usersRepository.findByEmail(email);        
@@ -85,17 +93,18 @@ class UserRepository {
         if(user){
             const login = await compare(password,user.password);
             if(login){
-                return true;
+                return user;
             }
             else{
-                return false;
+                return null;
             }
         }
         else{
-            return false;
+            return null;
         }
-
     }
+
+
 
 
 }

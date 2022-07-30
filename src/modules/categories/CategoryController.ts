@@ -9,7 +9,7 @@ class CategoryController{
         
         const wasCreated = await categoriesRepository.create({ name });
         
-        if(wasCreated){
+        if(wasCreated && name != null){
           return response.status(201).send("Categoria criada com sucesso.");
         }
         else{
@@ -58,6 +58,36 @@ class CategoryController{
           return response.status(422).send("Não foi possível apagar categoria.");
         }
       }
+
+      async findByID(request: Request, response: Response): Promise<Response>{
+        const {id} = request.params;
+        
+        const category = await categoriesRepository.findById(id);
+        
+        if(category){
+          return response.status(201).json(category);
+        }
+        else{
+          return response.status(422).send("Categoria não encontrada.");
+        }
+      }
+
+      async findByName(request: Request, response: Response): Promise<Response>{
+
+        const { name } = request.body;
+
+        const category = await categoriesRepository.findByName(name);
+
+        if(category){
+          return response.status(201).json(category);
+        }
+        else{
+          return response.status(422).send("Categoria não encontrada.");
+        }
+      }
+
+
+
 
 }
 

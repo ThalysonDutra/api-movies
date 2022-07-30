@@ -22,4 +22,12 @@ moviesRoutes.post("/", (request, response) => {
     return movieController.deleteMovie(request,response);
   });
 
+  moviesRoutes.post("/:id/score", (request, response)=>{
+    return movieController.scoreMovie(request,response);
+  });
+
+  moviesRoutes.get("/:id", (request, response)=>{
+    return movieController.findById(request,response);
+  });
+
 export { moviesRoutes };

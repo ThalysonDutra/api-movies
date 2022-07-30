@@ -33,7 +33,7 @@ class CategoryRepository {
     }
 
     async findByName(name: string): Promise<Category> {
-        const hasCategory = await this.repository.findOne({ where: { name: name } });
+        const hasCategory = await this.repository.findOne({ where: { name : name } });
         return hasCategory;
     }
 
@@ -62,6 +62,11 @@ class CategoryRepository {
         else{
             return false;
         }
+    }
+
+    async findById(id){
+        const category = await this.repository.findOne({where : { id : id }});
+        return category;
     }
 
     async deleteCategory(id): Promise<Boolean>{

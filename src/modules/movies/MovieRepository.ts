@@ -1,3 +1,4 @@
+import { request } from "express";
 import { Not, Repository } from "typeorm";
 import { AppDataSource } from "../../data-source";
 import { Movie } from "../../entity/Movie";
@@ -12,7 +13,7 @@ class MovieRepository {
     }
 
 
-    async create({ name, year, duration, description, categoryId }): Promise<boolean> {
+    async create({ name, year, duration, description, categoryId, link }): Promise<boolean> {
 
 
         const movieAlreadyExists = await this.findByName(name);
@@ -22,7 +23,7 @@ class MovieRepository {
         }
         else {
             const movie = this.repository.create({
-                name, year, duration, description, categoryId
+                name, year, duration, description, categoryId, link
             });
 
             await this.repository.save(movie);
@@ -38,10 +39,11 @@ class MovieRepository {
 
     async list(): Promise<Movie[]> {
         const movies = await this.repository.find({});
+
         return movies;
     }
 
-    async updateMovie(id, { name, year, duration, description, categoryId }): Promise<Boolean> {
+    async updateMovie(id, { name, year, duration, description, categoryId, link }): Promise<Boolean> {
 
         const movie = await this.repository.findOne({ where: { id: id } });
 
@@ -52,12 +54,12 @@ class MovieRepository {
                 return false;
             }
             else {
-                console.log("Aqui");
                 movie.name = name;
                 movie.year = year;
                 movie.duration = duration;
                 movie.description = description;
                 movie.categoryId = categoryId;
+                movie.link = link;
 
                 this.repository.save(movie);
                 return true;
@@ -82,6 +84,26 @@ class MovieRepository {
         }
     }
 
+    async giveRate (id, nota): Promise<Boolean>{
+    
+        const movie = await this.repository.findOne({where : { id : id }});
+
+        if(movie){
+            movie.score = (movie.countScore*movie.score + nota)/(movie.countScore+1);
+            movie.countScore = movie.countScore +1;
+            this.repository.save(movie);
+            return true;            
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    async findById(id): Promise<Movie>{
+        const movie = await this.repository.findOne({where: {id : id}});
+        return movie;
+    }
 
 }
 

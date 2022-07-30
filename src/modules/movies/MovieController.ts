@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
+import { RepositoryNotTreeError } from "typeorm";
 import { moviesRepository } from ".";
 
 class MovieController{
 
     async createMovie(request: Request, response: Response): Promise<Response>{
-        const { name, year, duration, description, categoryId } = request.body;
+        const { name, year, duration, description, categoryId, link } = request.body;
         
-        const wasCreated = await moviesRepository.create({name, year, duration, description, categoryId });
+        const wasCreated = await moviesRepository.create({name, year, duration, description, categoryId, link });
         
         console.log(categoryId);
         
@@ -26,9 +27,9 @@ class MovieController{
 
       async updateMovie (request: Request, response: Response): Promise<Response>{
           
-          const { name, year, duration, description, categoryId } = request.body;
+          const { name, year, duration, description, categoryId, link } = request.body;
           const {id} = request.params;
-          const editMovie = await moviesRepository.updateMovie(id, {name, year, duration, description,  categoryId});
+          const editMovie = await moviesRepository.updateMovie(id, {name, year, duration, description,  categoryId, link});
 
           if(editMovie){
             return response.status(201).send("Filme editado com sucesso.");
@@ -48,6 +49,36 @@ class MovieController{
         else{
           return response.status(422).send("Não foi possível excluir filme.")
         }
+      }
+      
+
+      async scoreMovie (request: Request, response: Response): Promise<Response>{
+
+        const {id} = request.params;
+        const { score } = request.body;
+
+        const movie = await moviesRepository.giveRate(id, score);
+        if(movie){
+          return response.status(201).send("Filme avaliado com sucesso.")
+        }
+        else{
+          return response.status(422).send("Não foi possível avaliar filme.")
+        }
+      }
+
+      async findById (request: Request, response: Response): Promise<Response>{
+        const {id} = request.params;
+        const {data} = request.body;
+
+        const movie = await moviesRepository.findById(id);
+        
+        if(movie){
+          return response.status(201).json(movie);
+        }
+        else{
+          return response.status(422).send("Filme não encontrado.");
+        }
+
       }
 
 }

@@ -21,4 +21,10 @@ categoriesRoutes.delete("/:id", (request, response) => {
   return categoryController.deleteCategory(request, response);
 });
 
+categoriesRoutes.get("/:id", (request, response) => {
+  return categoryController.findByID(request, response);
+});
+
+
+
 export { categoriesRoutes };

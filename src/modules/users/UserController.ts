@@ -38,8 +38,8 @@ class UserController {
 
     const {id} = request.params;
     const {name, email, password, isAdmin } = request.body;
-
-    const user = await usersRepository.updateUser(id, {name, email, password, isAdmin });
+    const passwordHash = await hash(password, 8);
+    const user = await usersRepository.updateUser(id, {name, email, password : passwordHash, isAdmin });
 
     if(user){
       return response.status(201).send("Informações atualizadas com sucesso.")
@@ -68,13 +68,26 @@ class UserController {
     const { email, password } = request.body;
     const loginValidator = await usersRepository.login(email, password);
 
-    if(loginValidator){
-      return response.status(201).send("Login realizado com sucesso.");
+    if(loginValidator != null){
+      return response.status(201).send({"isAdmin": loginValidator.isAdmin});
     }
     else{
       return response.status(422).send("Email ou senha incorretos.");
     }
 
+  }
+
+  async findById(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+
+    const user = await usersRepository.findById(id);
+
+    if (user){
+      return response.status(201).json(user);
+    }
+    else{
+      return response.status(422).send("Usuário não encontrado.")
+    }
   }
 
 

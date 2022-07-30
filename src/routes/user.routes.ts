@@ -26,4 +26,9 @@ usersRotas.post("/login", (request, response) => {
   return userController.login(request,response);
 });
 
+usersRotas.get("/:id", (request, response) => {
+  return userController.findById(request,response);
+});
+
+
 export { usersRotas };
